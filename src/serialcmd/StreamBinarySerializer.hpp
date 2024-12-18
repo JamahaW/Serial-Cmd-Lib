@@ -21,7 +21,7 @@ namespace serialcmd {
         }
 
         /// Побайтово записать тип
-        template<class T> void write(T &source) {
+        template<class T> void write(T &&source) {
             this->stream.write((const uint8_t *) &source, sizeof(T));
         }
     };
