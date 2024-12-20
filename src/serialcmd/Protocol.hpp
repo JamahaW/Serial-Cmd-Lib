@@ -19,7 +19,7 @@ namespace serialcmd {
     class Protocol {
     public:
         /// Функция обработки команды
-        typedef Error(*CommandFunc)(StreamSerializer &);
+        typedef void(*CommandFunc)(StreamSerializer &);
 
     private:
 
@@ -54,9 +54,7 @@ namespace serialcmd {
 
             if (cmd_index >= command_count) { return; }
 
-            const Error ret = commands[cmd_index](serializer);
-
-            serializer.write(ret);
+            commands[cmd_index](serializer);
         }
     };
 }
