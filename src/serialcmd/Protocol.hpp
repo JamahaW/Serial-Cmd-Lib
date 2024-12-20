@@ -11,8 +11,6 @@ namespace serialcmd {
 
     /// Протокол общения с мастер-устройством
     template<
-        /// Класс устройства
-        class Device,
         /// Тип индекса команды
         typename CommandIndex,
         /// Startup пакет данных
@@ -21,7 +19,7 @@ namespace serialcmd {
     class Protocol {
     public:
         /// Функция обработки команды
-        typedef Error(*CommandFunc)(Device &, StreamSerializer &);
+        typedef Error(*CommandFunc)(StreamSerializer &);
 
     private:
 
@@ -40,7 +38,7 @@ namespace serialcmd {
             const CommandIndex command_count,
             Stream &stream
         ) :
-            command_count(command_count), commands(commands), serializer(stream) {}
+            commands(commands), command_count(command_count), serializer(stream) {}
 
         /// Отправить начальный пакет
         void begin(Startup &&startup) {
@@ -49,7 +47,16 @@ namespace serialcmd {
 
         /// Обновление
         void pull() {
+            if (serializer.stream.available() < sizeof(CommandIndex)) { return; }
 
+            CommandIndex cmd_index;
+            serializer.read(cmd_index);
+
+            if (cmd_index >= command_count) { return; }
+
+            const Error ret = commands[cmd_index](serializer);
+
+            serializer.write(ret);
         }
     };
 }
