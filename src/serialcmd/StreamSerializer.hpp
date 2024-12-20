@@ -7,11 +7,11 @@ namespace serialcmd {
 
     /// Вспомогательный класс для чтения структур и примитивных типов из потока
     class StreamSerializer {
-    private:
-
-        Stream &stream;
 
     public:
+        /// Используемый поток
+        Stream &stream;
+
         explicit StreamSerializer(Stream &stream) :
             stream(stream) {}
 
