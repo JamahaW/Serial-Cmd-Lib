@@ -4,10 +4,6 @@
 
 
 namespace serialcmd {
-    enum Error : char {
-        ok = 0x00,
-        fail = 0x01
-    };
 
     /// Протокол общения с мастер-устройством
     template<
