@@ -43,7 +43,7 @@ namespace serialcmd {
 
         /// Обновление
         void pull() {
-            if (serializer.stream.available() < sizeof(CommandIndex)) { return; }
+            if (serializer.stream.available() < int(sizeof(CommandIndex))) { return; }
 
             CommandIndex cmd_index;
             serializer.read(cmd_index);
